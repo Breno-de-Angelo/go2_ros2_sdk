@@ -49,10 +49,7 @@ def generate_launch_description():
     conn_type = os.getenv('CONN_TYPE', 'webrtc')
 
     if conn_mode == 'single':
-        rviz_config = "single_robot_conf.rviz"
-    else:
-        rviz_config = "multi_robot_conf.rviz"
-
+        rviz_config = "robot_mapper_conf.rviz"
     if conn_type == 'cyclonedds':
         rviz_config = "cyclonedds_config.rviz"
 
@@ -80,22 +77,10 @@ def generate_launch_description():
         get_package_share_directory('go2_robot_sdk'),
         'config', 'twist_mux.yaml')
 
-    foxglove_launch = os.path.join(
-        get_package_share_directory('foxglove_bridge'),
-        'launch',
-        'foxglove_bridge_launch.xml',
-    )
-
     slam_toolbox_config = os.path.join(
         get_package_share_directory('go2_robot_sdk'),
         'config',
         'mapper_params_online_async.yaml'
-    )
-
-    nav2_config = os.path.join(
-        get_package_share_directory('go2_robot_sdk'),
-        'config',
-        'nav2_params.yaml'
     )
 
     if conn_mode == 'single':
@@ -227,28 +212,13 @@ def generate_launch_description():
         ),
 
         IncludeLaunchDescription(
-            FrontendLaunchDescriptionSource(foxglove_launch)
-        ),
-
-        IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 os.path.join(get_package_share_directory(
                     'slam_toolbox'), 'launch', 'online_async_launch.py')
             ]),
             launch_arguments={
-                'slam_params_file': slam_toolbox_config,
+                'params_file': slam_toolbox_config,
                 'use_sim_time': use_sim_time,
             }.items(),
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                os.path.join(get_package_share_directory(
-                    'nav2_bringup'), 'launch', 'navigation_launch.py')
-            ]),
-            launch_arguments={
-                'params_file': nav2_config,
-                'use_sim_time': use_sim_time,
-            }.items(),
-        ),
+        )
     ])

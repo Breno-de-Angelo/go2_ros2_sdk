@@ -43,7 +43,7 @@ Stephen Brawner (brawner@gmail.com)
       </geometry>
     </collision>
   </link>
-  <link
+  <!-- <link
     name="odom">
   </link>
   <joint
@@ -56,7 +56,7 @@ Stephen Brawner (brawner@gmail.com)
       link="odom" />
     <child
       link="{robot_num}/base_link" />
-  </joint>
+  </joint> -->
 
   <joint name="{robot_num}/base_footprint_joint" type="fixed">
     <parent link="{robot_num}/base_link"/>
