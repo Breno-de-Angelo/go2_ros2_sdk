@@ -34,7 +34,7 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     no_rviz2 = LaunchConfiguration('no_rviz2', default='false')
-    map_dir = LaunchConfiguration('map', default="/home/breno/ros2_ws/src/maps/ct13_2024_08_29_save.yaml")
+    map_dir = LaunchConfiguration('map', default="/home/breno/ros2_ws/src/maps/ct13_2024_08_30_save.yaml")
 
     robot_token = os.getenv('ROBOT_TOKEN', '') # how does this work for multiple robots?
     robot_ip = os.getenv('ROBOT_IP', '')

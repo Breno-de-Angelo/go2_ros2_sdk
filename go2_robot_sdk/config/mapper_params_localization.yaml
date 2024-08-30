@@ -15,7 +15,7 @@ slam_toolbox:
     mode: localization
 
     # if you'd like to start localizing on bringup in a map and pose
-    map_file_name: /home/breno/ros2_ws/src/maps/ct13_2024_08_29
+    map_file_name: /home/breno/ros2_ws/src/maps/ct13_2024_08_30_serial
     # map_start_pose: [0.0, 0.0, 0.0]
     map_start_at_dock: true
 
