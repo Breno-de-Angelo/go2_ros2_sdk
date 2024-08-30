@@ -34,6 +34,7 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     no_rviz2 = LaunchConfiguration('no_rviz2', default='false')
+    map_dir = LaunchConfiguration('map', default="/home/breno/ros2_ws/src/maps/ct13_2024_08_29_save.yaml")
 
     robot_token = os.getenv('ROBOT_TOKEN', '') # how does this work for multiple robots?
     robot_ip = os.getenv('ROBOT_IP', '')
@@ -49,7 +50,10 @@ def generate_launch_description():
     conn_type = os.getenv('CONN_TYPE', 'webrtc')
 
     if conn_mode == 'single':
-        rviz_config = "robot_mapper_conf.rviz"
+        rviz_config = "robot_driver_conf.rviz"
+    else:
+        rviz_config = "multi_robot_conf.rviz"
+
     if conn_type == 'cyclonedds':
         rviz_config = "cyclonedds_config.rviz"
 
@@ -77,10 +81,10 @@ def generate_launch_description():
         get_package_share_directory('go2_robot_sdk'),
         'config', 'twist_mux.yaml')
 
-    slam_toolbox_config = os.path.join(
+    nav2_config = os.path.join(
         get_package_share_directory('go2_robot_sdk'),
         'config',
-        'mapper_params_online_async.yaml'
+        'nav2_params.yaml'
     )
 
     if conn_mode == 'single':
@@ -214,11 +218,12 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 os.path.join(get_package_share_directory(
-                    'slam_toolbox'), 'launch', 'online_async_launch.py')
+                    'nav2_bringup'), 'launch', 'bringup_launch.py')
             ]),
             launch_arguments={
-                'params_file': slam_toolbox_config,
+                'map': map_dir,
+                'params_file': nav2_config,
                 'use_sim_time': use_sim_time,
             }.items(),
-        )
+        ),
     ])
