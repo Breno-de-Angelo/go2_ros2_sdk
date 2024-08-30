@@ -215,15 +215,50 @@ def generate_launch_description():
             ],
         ),
 
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([
+        #         os.path.join(get_package_share_directory(
+        #             'nav2_bringup'), 'launch', 'bringup_launch.py')
+        #     ]),
+        #     launch_arguments={
+        #         'map': map_dir,
+        #         'params_file': nav2_config,
+        #         'use_sim_time': use_sim_time,
+        #     }.items(),
+        # ),
+
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([
+        #         os.path.join(get_package_share_directory(
+        #             'nav2_bringup'), 'launch', 'localization_launch.py')
+        #     ]),
+        #     launch_arguments={'namespace': '',
+        #                       'map': map_dir,
+        #                       'use_sim_time': use_sim_time,
+        #                       'autostart': 'true',
+        #                       'params_file': nav2_config,
+        #                       'use_lifecycle_mgr': 'false'}.items()),
+
+        Node(
+          parameters=[
+            get_package_share_directory("go2_robot_sdk") + '/config/mapper_params_localization.yaml'
+          ],
+          package='slam_toolbox',
+          executable='localization_slam_toolbox_node',
+          name='slam_toolbox',
+          output='screen'
+        ),
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 os.path.join(get_package_share_directory(
-                    'nav2_bringup'), 'launch', 'bringup_launch.py')
+                    'nav2_bringup'), 'launch', 'navigation_launch.py')
             ]),
-            launch_arguments={
-                'map': map_dir,
-                'params_file': nav2_config,
-                'use_sim_time': use_sim_time,
-            }.items(),
-        ),
+            launch_arguments={'namespace': '',
+                              'use_sim_time': use_sim_time,
+                              'autostart': 'true',
+                              'params_file': nav2_config,
+                              'map': map_dir,
+                              'use_lifecycle_mgr': 'false',
+                              'map_subscribe_transient_local': 'true'}.items()),
     ])
